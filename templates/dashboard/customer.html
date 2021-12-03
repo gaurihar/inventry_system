@@ -30,7 +30,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for order in order %}
+                            {% comment %} {% for order in order %}
                             {% if order.customer == user %}
                             <tr>
                                 <td>{{ order.name }}</td>
@@ -38,7 +38,7 @@
                                 <td>{{ order.order_quantity }}</td>
                             </tr>
                             {% endif %}
-                            {% endfor %}
+                            {% endfor %} {% endcomment %}
                         </tbody>
                     </table>
                 </div>

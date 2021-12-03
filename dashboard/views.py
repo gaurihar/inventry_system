@@ -82,10 +82,11 @@ def product_edit(request, pk):
 
 @login_required
 def order(request):
-    # return response.HttpResponse("this is staff page")
+    # return response.HttpResponse("this is order page")
     orders=Order.objects.all()
     context={
         'orders':orders
     }
     return render(request,'dashboard/order.html',context)
+
 
