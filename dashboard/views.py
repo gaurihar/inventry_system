@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Count, Sum
 from django.db.models.fields import PositiveIntegerField
 from django.shortcuts import render,redirect
 from django.http import response
@@ -12,6 +13,7 @@ from django.contrib import messages
 @login_required
 def index(request):
     orders=Order.objects.all()
+    products=Product.objects.all()
     if request.method=='POST':
         form =OrderForm(request.POST)
         if form.is_valid():
@@ -24,7 +26,8 @@ def index(request):
 
     context ={
         'orders':orders,
-        'form' :form
+        'form' :form,
+        'products':products
     }
     return render(request,'dashboard/index.html',context)
 
@@ -50,7 +53,8 @@ def staff_detail(request,pk):
 @login_required
 def product(request):
     # return response.HttpResponse("this is staff page")
-    items =Product.objects.all()
+    items = Product.objects.all()
+
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
@@ -101,6 +105,7 @@ def product_edit(request, pk):
 def order(request):
     # return response.HttpResponse("this is order page")
     orders=Order.objects.all()
+
     context={
         'orders':orders
     }

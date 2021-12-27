@@ -14,6 +14,7 @@ def register(request):
             username=form.cleaned_data.get('username')
             messages.success(request,f'Account has been created for {username}. continue to login')
             return redirect('user-login')
+            
 
     else:
         form =CreateUserForm()
