@@ -26,6 +26,15 @@
                             <td>{{worker.username}}</td>
                             <td>{{worker.email}}</td>
                             <td>{{worker.profile_phone}}</td> 
+                            <td>
+                                <a class="btn btn-info btn-sm mr-2"
+                                href="{% url 'dashboard-staff-edit' worker.id %}">Edit</a>
+                                <a class="btn btn-danger btn-sm ml-2"
+                                    href="{% url 'dashboard-staff-delete' worker.id %}">Delete</a>
+                                    
+                            </td> 
+
+                            
                         </tr>
                         
                          {% endfor %}

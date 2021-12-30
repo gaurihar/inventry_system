@@ -5,12 +5,17 @@ from django.shortcuts import render,redirect
 from django.http import response
 from django.contrib.auth.decorators import login_required
 from .models import Product,Order
-from .forms import ProductForm,OrderForm
+from .forms import ProductForm,OrderForm,StaffForm
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+from django.shortcuts import get_object_or_404
+
+
 
 # Create your views here.
-@login_required
+# @login_required
 def index(request):
     orders=Order.objects.all()
     products=Product.objects.all()
@@ -31,10 +36,12 @@ def index(request):
     }
     return render(request,'dashboard/index.html',context)
 
-@login_required
+# @login_required
 def staff(request):
     # return response.HttpResponse("this is staff page")
     workers= User.objects.all()
+    
+
     print("work")
 
     context={
@@ -83,6 +90,14 @@ def product_delete(request,pk):
     return render (request,'dashboard/product_delete.html')
 
 @login_required
+def staff_delete(request,pk):
+    del_user=User.objects.get(id=pk)
+    if request.method == 'POST':
+        del_user.delete()
+        return redirect('dashboard-staff')
+    return render (request,'dashboard/staff_delete.html')
+
+@login_required
 def product_edit(request, pk):
     item = Product.objects.get(id=pk)
     if request.method == 'POST':
@@ -99,6 +114,33 @@ def product_edit(request, pk):
         'form': form,
     }
     return render(request, 'dashboard/product_edit.html', context)
+
+
+@login_required
+def staff_edit(request, pk):
+    item = User.objects.get(id=pk)
+    user = get_object_or_404(User, pk=pk)
+    print(user)
+    content_type = ContentType.objects.get_for_model(User)
+    print(content_type)
+    permission = Permission.objects.filter(pk=pk)
+    print(permission)
+    
+
+    if request.method == 'POST':
+        form = StaffForm(request.POST, instance=item)
+        if form.is_valid():
+            print("valid")
+            form.save()
+            return redirect('dashboard-staff')
+        else:
+            print("not valid")    
+    else:
+        form = StaffForm(instance=item)
+    context = {
+        'form': form,
+    }
+    return render(request, 'dashboard/staff_edit.html', context)
 
 
 @login_required
